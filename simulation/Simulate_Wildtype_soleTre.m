@@ -32,9 +32,9 @@ for i=1:83
     FBAsolution = optimizeCbModel(model_dynamic,'max','one');
     vl(i)=FBAsolution.x(3);
     miu(i)=FBAsolution.x(86);
-    St(i+1)=St(i)-v(i)*dcw(i)*1;% initial trehalose concentration for the next step (mmol/L)
     dcw(i+1)=exp(miu(i)*1+log(dcw(i)));% initial biomass fo the next step (g/L)
-    Sl(i+1)=Sl(i)+vl(i)*dcw(i);% initial lactate concentration for the next step (mmol/L)
+    St(i+1)=St(i)-v(i)/miu(i)*(dcw(i+1)-dcw(i));% initial trehalose concentration for the next step (mmol/L)
+    Sl(i+1)=Sl(i)+vl(i)/miu(i)*(dcw(i+1)-dcw(i));% initial lactate concentration for the next step (mmol/L)
     v(i+1)=vmax*St(i+1)/(Km+St(i+1));% trehalose specific consumption rate for the next step (mmol/gDCW/h)
     FBA(:,i)=FBAsolution.x; 
 end
@@ -73,9 +73,9 @@ for i=1:83
     FBAsolution = optimizeCbModel(model_dynamic,'max','one');
     vl(i)=FBAsolution.x(3);
     miu(i)=FBAsolution.x(86);
-    St(i+1)=St(i)-v(i)*dcw(i)*1;% initial trehalose concentration for the next step (mmol/L)
     dcw(i+1)=exp(miu(i)*1+log(dcw(i)));% initial biomass fo the next step (g/L)
-    Sl(i+1)=Sl(i)+vl(i)*dcw(i);% initial lactate concentration for the next step (mmol/L)
+    St(i+1)=St(i)-v(i)/miu(i)*(dcw(i+1)-dcw(i));% initial trehalose concentration for the next step (mmol/L)
+    Sl(i+1)=Sl(i)+vl(i)/miu(i)*(dcw(i+1)-dcw(i));% initial lactate concentration for the next step (mmol/L)
     v(i+1)=vmax*St(i+1)/(Km+St(i+1));% trehalose specific consumption rate for the next step (mmol/gDCW/h)
     FBA(:,i)=FBAsolution.x; 
 end

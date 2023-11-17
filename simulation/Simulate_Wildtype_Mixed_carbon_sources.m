@@ -1,5 +1,5 @@
 %% Pgluc (maximize growth)
-vmaxg=22.25;% maximum glucose specific consumption rate (mmol/gDCW/h)
+vmaxg=21.32;% maximum glucose specific consumption rate (mmol/gDCW/h)
 Kmg=25;% glucose saturation constant (mmol/L)
 Sg=zeros(12,1);
 Sg(1)=110.596;% initial glucose concentration for the first step (mmol/L)
@@ -41,12 +41,12 @@ for j=1:12
     vlg(j)=FBAsolution.x(3);
     miug(j)=FBAsolution.x(86);
     dcwg(j+1)=exp(miug(j)*1+log(dcwg(j)));% initial biomass fo the next step (g/L)
-    Sg(j+1)=Sg(j)-v1(j)*dcwg(j)*1;% initial glucose concentration for the next step (mmol/L)
-    Slg(j+1)=Slg(j)+vlg(j)*dcwg(j)*1;% initial lactate concentration for the next step (mmol/L)
+    Sg(j+1)=Sg(j)-v1(j)/miug(j)*(dcwg(j+1)-dcwg(j));% initial glucose concentration for the next step (mmol/L)
+    Slg(j+1)=Slg(j)+vlg(j)/miug(j)*(dcwg(j+1)-dcwg(j));% initial lactate concentration for the next step (mmol/L)
     v1(j+1)=vmaxg*Sg(j+1)/(Kmg+Sg(j+1));% glucose specific consumption rate for the next step (mmol/gDCW/h)
 end
 %% Pgluc secondary simulation (minimizied protein production)
-vmaxg=22.25;% maximum glucose specific consumption rate (mmol/gDCW/h)
+vmaxg=21.32;% maximum glucose specific consumption rate (mmol/gDCW/h)
 Kmg=25;% glucose saturation constant (mmol/L)
 Sg=zeros(12,1);
 Sg(1)=110.596;% initial glucose concentration for the first step (mmol/L)
@@ -100,13 +100,13 @@ for j=1:12
     vcit(j)=FBAsolution.x(70);
     vpyr(j)=FBAsolution.x(71);
     vacetoin(j)=FBAsolution.x(28);
-    Sg(j+1)=Sg(j)-v1(j)*dcwg(j)*1;% initial glucose concentration for the next step (mmol/L)
     dcwg(j+1)=exp(miug(j)*1+log(dcwg(j)));% initial biomass fo the next step (g/L)
-    Slg(j+1)=Slg(j)+vlg(j)*dcwg(j);% initial lactate concentration for the next step (mmol/L)
-    Sace(j+1)=Sace(j)+vace(j)*dcwg(j);% initial acetate concentration for the next step (mmol/L)
-    Scit(j+1)=Scit(j)+vcit(j)*dcwg(j);% initial citrate concentration for the next step (mmol/L)
-    Spyr(j+1)=Spyr(j)+vpyr(j)*dcwg(j);% initial pyruvate concentration for the next step (mmol/L)
-    Sacetoin(j+1)=Sacetoin(j)+vacetoin(j)*dcwg(j);% initial acetoin concentration for the next step (mmol/L)
+    Sg(j+1)=Sg(j)-v1(j)/miug(j)*(dcwg(j+1)-dcwg(j));% initial glucose concentration for the next step (mmol/L)
+    Slg(j+1)=Slg(j)+vlg(j)/miug(j)*(dcwg(j+1)-dcwg(j));% initial lactate concentration for the next step (mmol/L)
+    Sace(j+1)=Sace(j)+vace(j)/miug(j)*(dcwg(j+1)-dcwg(j));% initial acetate concentration for the next step (mmol/L)
+    Scit(j+1)=Scit(j)+vcit(j)/miug(j)*(dcwg(j+1)-dcwg(j));% initial citrate concentration for the next step (mmol/L)
+    Spyr(j+1)=Spyr(j)+vpyr(j)/miug(j)*(dcwg(j+1)-dcwg(j));% initial pyruvate concentration for the next step (mmol/L)
+    Sacetoin(j+1)=Sacetoin(j)/miug(j)+vacetoin(j)*(dcwg(j+1)-dcwg(j));% initial acetoin concentration for the next step (mmol/L)
     v1(j+1)=vmaxg*Sg(j+1)/(Kmg+Sg(j+1));% glucose specific consumption rate for the next step (mmol/gDCW/h)
 end
 result_glc2.rxns = ecModel.rxns;
@@ -187,7 +187,7 @@ vlt(1)=solMORP.x(3);
 miut(1)=solMORP.x(86);
 St(2)=St(1)-v2(1)*dcwt(1)*1;% initial trehalose concentration for the next step (mmol/L)
 dcwt(2)=exp(miut(1)*1+log(dcwt(1)));
-Slt(2)=Slt(1)+vlt(1)*dcwt(1);% initial lactate concentration for the next step (mmol/L)
+Slt(2)=Slt(1)+vlt(1)*dcwt(2);% initial lactate concentration for the next step (mmol/L)
 v2(2)=vmaxt*St(2)/(Kmt+St(2));% trehalose specific consumption rate for the next step (mmol/gDCW/h)
 for i=1:67
     model_tre(i+1) = ecModel;

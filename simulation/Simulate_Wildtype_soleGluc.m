@@ -1,5 +1,5 @@
 %% sole glucose
-vmaxg=10.3;% maximum glucose specific consumption rate (mmol/gDCW/h)
+vmaxg=10.18;% maximum glucose specific consumption rate (mmol/gDCW/h)
 Kmg=25;% glucose saturation constant (mmol/L)
 Sg=zeros(27,1);
 Sg(1)=222.22;% initial glucose concentration for the first step (mmol/L)
@@ -39,13 +39,13 @@ for j=1:27
     FBAg(:,j)=FBAsolution.x;
     vlg(j)=FBAsolution.x(3);
     miug(j)=FBAsolution.x(86);
-    Sg(j+1)=Sg(j)-v1(j)*dcwg(j)*1;% initial glucose concentration for the next step (mmol/L)
     dcwg(j+1)=exp(miug(j)*1+log(dcwg(j)));% initial biomass fo the next step (g/L)
-    Slg(j+1)=Slg(j)+vlg(j)*dcwg(j);% initial lactate concentration for the next step (mmol/L)
+    Sg(j+1)=Sg(j)-v1(j)/miug(j)*(dcwg(j+1)-dcwg(j));% initial glucose concentration for the next step (mmol/L)
+    Slg(j+1)=Slg(j)+vlg(j)/miug(j)*(dcwg(j+1)-dcwg(j));% initial lactate concentration for the next step (mmol/L)
     v1(j+1)=vmaxg*Sg(j+1)/(Kmg+Sg(j+1));% glucose specific consumption rate for the next step (mmol/gDCW/h)
 end
 %% secondary simulation (minimizied protein production)
-vmaxg=10.3; 
+vmaxg=10.18; 
 Kmg=25;
 Sg=zeros(27,1);
 Sg(1)=222.22;
@@ -85,8 +85,8 @@ for j=1:27
     FBAg(:,j)=FBAsolution.x;
     vlg(j)=FBAsolution.x(3);
     miug(j)=FBAsolution.x(86);
-    Sg(j+1)=Sg(j)-v1(j)*dcwg(j)*1;
-    dcwg(j+1)=exp(miug(j)*1+log(dcwg(j)));
-    Slg(j+1)=Slg(j)+vlg(j)*dcwg(j);
-    v1(j+1)=vmaxg*Sg(j+1)/(Kmg+Sg(j+1));
+    dcwg(j+1)=exp(miug(j)*1+log(dcwg(j)));% initial biomass fo the next step (g/L)
+    Sg(j+1)=Sg(j)-v1(j)/miug(j)*(dcwg(j+1)-dcwg(j));% initial glucose concentration for the next step (mmol/L)
+    Slg(j+1)=Slg(j)+vlg(j)/miug(j)*(dcwg(j+1)-dcwg(j));% initial lactate concentration for the next step (mmol/L)
+    v1(j+1)=vmaxg*Sg(j+1)/(Kmg+Sg(j+1));% glucose specific consumption rate for the next step (mmol/gDCW/h)
 end
