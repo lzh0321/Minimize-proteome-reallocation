@@ -1,5 +1,5 @@
 # About MORP
-The **MORP** is an algorithm based on the enzyme-constrained genome-scale metabolic model. The MORP is the prediction that when the condition changes, the cell responds based on the **m**inimization **o**f **r**eallocation of **p**roteome principle. The method calculated the minimal the sum of absolute differences between previously and currently simulated enzyme usage fluxes, from which the intracellular enzyme usage distribution can be obtained after condition change. 
+The **MORP** (**M**inimization **o**f **R**eallocation of **P**roteome) algorithm is built upon the enzyme-constrained genome-scale metabolic model. It predicts that when conditions change, cells respond based on principle of minimizing the reallocation of proteome. This method calculates the sum of absolute differences between previously and currently simulated enzyme usage fluxes, with the goal of obtaining the intracellular enzyme usage distribution after the condition change. 
 
 # Applicable scenarios and conditions
 scenarios:
@@ -10,12 +10,12 @@ conditions:
 2.Known the constraints of the model after condition change.
 
 # Required software
-Matlab (The MORP was implemented in the matlab)
+Matlab (The MORP is implemented in the matlab)
 
-Gurobi Optimizer (The solution procedure was performed using Gurobi)
+Gurobi Optimizer (The solution procedure is performed using Gurobi)
 
 # About our study
-We used dFBA combined with dynamic MORP (dMORP) to simulate the metabolic shift of Bacillus coagulans from glucose culture to trehalose culture in mixed carbon sources environment. Our simulation suggestted that bacteria tend to minimize proteome reallocation upon environmental changes, which coincided with transcriptomics, proteomics and intracellular metabolite data.
+We use a combination of dynamic Flux Balance Analysis (dFBA) and dynamic MORP (dMORP) to simulate the metabolic transition of Bacillus coagulans from a glucose culture to a trehalose culture in a mixed carbon sources environment. Our simulation results indicate that bacteria tend to minimize proteome reallocation in response to environmental changes. These findings are consistent with transcriptomics, proteomics, and intracellular metabolite data.
 
 # Contact us
 If there are any problems during the use of the MORP, it can be raised in issues.
